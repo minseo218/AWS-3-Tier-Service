@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Minsunny Day</title>
+</head>
+<body>
+    <h2>Happy Minsunny Day! You are in Web server:)</h2>
+    <button onclick="getData()">Get Data from WAS</button>
+    <div id="data"></div>
+    <a href="page.html">Go to User Info Page</a>
+
+    <script>
+        function getData() {
+            fetch('/getData')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('data').innerText = JSON.stringify(data);
+                });
+        }
+    </script>
+</body>
+</html>

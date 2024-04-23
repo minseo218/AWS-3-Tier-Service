@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info Page</title>
+</head>
+<body>
+    <h2>Enter User Information</h2>
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <button type="button" onclick="submitUserInfo()">View User Info</button>
+    </form>
+    <div id="userInfo"></div>
+
+    <script>
+        function submitUserInfo() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const data = { name, email };
+
+            fetch('/getUserInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('userInfo').innerHTML = `
+                    <h3>User Information</h3>
+                    <p>Name: ${data.name}</p>
+                    <p>Email: ${data.email}</p>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
