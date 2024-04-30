@@ -55,13 +55,14 @@ public class DataService {
 
     public String calculateLoanData(String userName, int loanAmount, int loanDuration) {
         StringBuilder result = new StringBuilder();
-        result.append("User Information:\n");
-        result.append("Name: ").append(userName).append("\n");
-        result.append("Loan Amount: ").append(loanAmount).append("\n");
-        result.append("Loan Duration (months): ").append(loanDuration).append("\n\n");
+        result.append("<h2>User Information</h2>");
+        result.append("<p><strong>Name:</strong> ").append(userName).append("</p>");
+        result.append("<p><strong>Loan Amount:</strong> ").append(loanAmount).append("</p>");
+        result.append("<p><strong>Loan Duration (months):</strong> ").append(loanDuration).append("</p>");
 
-        result.append("Loan Companies:\n");
-        result.append("|Company Name|Interest Rate|Total Interest|\n");
+        result.append("<h2>Loan Companies</h2>");
+        result.append("<table border=\"1\">");
+        result.append("<tr><th>Company Name</th><th>Interest Rate</th><th>Total Interest</th></tr>");
 
         List<LoanCompany> loanCompanies = getLoanCompanies(); // 데이터베이스에서 회사 정보 가져오기
 
@@ -71,9 +72,17 @@ public class DataService {
         for (LoanCompany company : loanCompanies) {
             double interestRate = company.getInterestRate();
             double totalInterest = calculateTotalInterest(loanAmount, loanDuration, interestRate);
-            result.append("|").append(company.getCompanyName()).append("|")
-                    .append(interestRate).append("|")
-                    .append(totalInterest).append("|\n");
+            result.append("<tr>");
+            // 가장 낮은 금리를 가진 회사인 경우에는 색을 변경합니다.
+            if (interestRate == lowestInterestRate) {
+                result.append("<td style='background-color: orange; color: white;'>");
+            } else {
+                result.append("<td>");
+            }
+            result.append(company.getCompanyName()).append("</td>")
+                    .append("<td>").append(interestRate).append("</td>")
+                    .append("<td>").append(totalInterest).append("</td>")
+                    .append("</tr>");
 
             if (interestRate < lowestInterestRate) {
                 lowestInterestRate = interestRate;
@@ -81,10 +90,13 @@ public class DataService {
             }
         }
 
-        result.append("\nLowest Interest Company: <span style='color: orange;'>").append(lowestInterestCompany).append("</span>");
+        result.append("</table>");
+        // 이미 표에서 행으로 출력되었기 때문에 추가로 출력하지 않고, 색을 변경해줍니다.
+        result.append("<p><span style='background-color: orange; color: white;'>").append(lowestInterestCompany).append("</span></p>");
 
         return result.toString();
     }
+
 
     private double calculateTotalInterest(int loanAmount, int loanDuration, double interestRate) {
         return loanAmount * loanDuration * interestRate;
