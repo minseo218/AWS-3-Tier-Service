@@ -32,6 +32,10 @@ dependencies {
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    /// ADD AWS SDK Dependence
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:2.4.4'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config:2.4.4'
+
 }
 
 tasks.named('test') {

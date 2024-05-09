@@ -1,0 +1,10 @@
+FROM mysql:5.7
+
+ENV MYSQL_DATABASE=loan \
+    MYSQL_ROOT_PASSWORD=my-secret-pw
+
+ADD setup.sql /docker-entrypoint-initdb.d/
+
+# 포트 노출
+EXPOSE 3306
+

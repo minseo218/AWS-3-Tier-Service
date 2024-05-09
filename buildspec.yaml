@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+
+  pre_build:
+    commands:
+      - echo "Installing Gradle..."
+      - curl -sL https://services.gradle.org/distributions/gradle-7.0.2-bin.zip -o gradle.zip
+      - unzip -q gradle.zip
+      - export GRADLE_HOME=`pwd`/gradle-7.0.2
+      - export PATH=$GRADLE_HOME/bin:$PATH
+
+  build:
+    commands:
+      - echo "Building Java project with Gradle..."
+      - gradle build
+
+  post_build:
+    commands:
+      - echo "Post build actions .."
