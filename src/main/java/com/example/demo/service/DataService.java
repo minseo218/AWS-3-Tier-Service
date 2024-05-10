@@ -1,35 +1,72 @@
 package com.example.demo.service;
 
-import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
-import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
-import com.amazonaws.services.secretsmanager.model.GetSecretValueResult;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
-
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
+import software.amazon.awssdk.services.ssm.SsmClient;
+import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
+import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import javax.annotation.PostConstruct;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
+@Configuration
 public class DataService {
-//    static {
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException("MySQL JDBC Driver를 찾을 수 없습니다.", e);
-//        }
-//    }
+    @Value("${db.secret.name}")
+    private String dbSecretName;
+    @Value("${db.url.parameter.name}")
+    private String dbUrlParameterName;
+    @Value("${spring.application.name}")
+    private String db;
+
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
+
+
+    @PostConstruct
+    public void initialize() {
+        dbUrl = "jdbc:mysql://" + getParameterStoreValue(dbUrlParameterName) +"/"+ db;
+        // Secret store 값 가져와서 변수에 넣기
+        Region region = Region.AP_SOUTHEAST_1;
+        SecretsManagerClient secretsClient = SecretsManagerClient.builder().region(region).build();
+        GetSecretValueRequest valueRequest = GetSecretValueRequest.builder().secretId(dbSecretName).build();
+        // Secret Manager로부터 Secret Value를 가져오기
+        GetSecretValueResponse valueResponse = secretsClient.getSecretValue(valueRequest);
+        // Secret Value를 JSON 형태의 문자열로 파싱
+        String secretString = valueResponse.secretString();
+        JsonObject jsonObject = JsonParser.parseString(secretString).getAsJsonObject();
+
+        dbUser = jsonObject.get("username").getAsString();
+        dbPassword = jsonObject.get("password").getAsString();
+
+        // 받아온 값들을 로그로 출력
+        log.info("DB URL: {}", dbUrl);
+        log.info("DB User: {}", dbUser);
+        log.info("DB Password: {}", dbPassword);
+    }
+
+    public String getParameterStoreValue(String parameterName) {
+        Region region = Region.AP_SOUTHEAST_1;
+        SsmClient ssmClient = SsmClient.builder().region(region).build();
+        GetParameterRequest parameterRequest = GetParameterRequest.builder().name(parameterName).withDecryption(true).build();
+        GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
+        return parameterResponse.parameter().value();
+    }
+
     public boolean saveUserInfo(String userName, int loanAmount, int loanDuration) {
-        String dbUrlParameterName = "/3Tier/db/endpoint";
-        String dbUserSecretName = "rds!cluster-8dd9b92d-9975-4258-b2c6-47bfad20baf4";
-
-        String dbUrl = getParameterStoreValue(dbUrlParameterName);
-        String dbUser = getSecretValue(dbUserSecretName, "username");
-        String dbPassword = getSecretValue(dbUserSecretName, "password");
-
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String insertQuery = "INSERT INTO user (name, loan_amount, loan_duration) VALUES (?, ?, ?)";
             try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
@@ -40,16 +77,12 @@ public class DataService {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error saving user info", e);
             return false;
         }
     }
 
     public List<LoanCompany> getLoanCompanies() {
-        String dbUrl = getParameterStoreValue("YOUR_DB_URL_PARAMETER_NAME");
-        String dbUser = getSecretValue("YOUR_DB_USER_SECRET_NAME");
-        String dbPassword = getSecretValue("YOUR_DB_PASSWORD_SECRET_NAME");
-
         List<LoanCompany> loanCompanies = new ArrayList<>();
         // Connection 객체 생성
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -62,11 +95,10 @@ public class DataService {
                 loanCompanies.add(new LoanCompany(companyName, interestRate));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error getting loan companies", e);
         }
         return loanCompanies;
     }
-
 
     public String calculateLoanData(String userName, int loanAmount, int loanDuration) {
         StringBuilder result = new StringBuilder();
@@ -112,41 +144,6 @@ public class DataService {
         return result.toString();
     }
 
-    private String getSecretValue(String secretName) {
-        String secretValue = null;
-        GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest().withSecretId(secretName);
-        GetSecretValueResult getSecretValueResult = null;
-
-        try {
-            getSecretValueResult = AWSSecretsManagerClientBuilder.defaultClient().getSecretValue(getSecretValueRequest);
-        } catch (Exception e) {
-            throw e;
-        }
-
-        if (getSecretValueResult.getSecretString() != null) {
-            secretValue = getSecretValueResult.getSecretString();
-        }
-
-        return secretValue;
-    }
-
-    private String getParameterStoreValue(String parameterName) {
-        String parameterValue = null;
-        GetParameterRequest getParameterRequest = new GetParameterRequest().withName(parameterName).withWithDecryption(true);
-        GetParameterResult getParameterResult = null;
-
-        try {
-            getParameterResult = AWSSimpleSystemsManagementClientBuilder.defaultClient().getParameter(getParameterRequest);
-        } catch (Exception e) {
-            throw e;
-        }
-
-        if (getParameterResult.getParameter() != null) {
-            parameterValue = getParameterResult.getParameter().getValue();
-        }
-
-        return parameterValue;
-    }
     private double calculateTotalInterest(int loanAmount, int loanDuration, double interestRate) {
         return loanAmount * loanDuration * interestRate;
     }
@@ -168,5 +165,4 @@ public class DataService {
             return interestRate;
         }
     }
-
 }
