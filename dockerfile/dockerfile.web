@@ -11,4 +11,4 @@ COPY userInfo.html /usr/share/nginx/html/userInfo.html
 # Nginx 서버를 실행합니다.
 CMD ["nginx", "-g", "daemon off;"]
 
-EXPOSE 8080
+EXPOSE 80

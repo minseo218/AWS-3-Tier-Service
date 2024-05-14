@@ -2,8 +2,27 @@ package com.example.demo.controller.index;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.service.DataService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 
 import java.util.Map;
+
+@Controller
+class WebController {
+
+    @Autowired
+    private DataService dataService;
+
+    @GetMapping("/home")
+    public String getHomePage() {
+        return "home"; // templates/home.html 템플릿을 렌더링하여 반환
+    }
+
+    @GetMapping("/app/userInfo")
+    public String getUserInfoPage() {
+        return "userInfo"; // templates/userInfo.html 템플릿을 렌더링하여 반환
+    }
+}
 
 @RestController
 class HomeController {
@@ -38,5 +57,4 @@ class HomeController {
             return "Failed to save user information.";
         }
     }
-
 }

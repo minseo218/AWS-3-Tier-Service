@@ -1,35 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/static/style.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Information</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        body {
-            background-color: #FFFFFF;
-        }
-        .jumbotron {
-            background-color: #FFFFFF;
-        }
-        .btn-primary, .btn-secondary {
-            background-color: #FFD700;
-            border-color: #FFD700;
-        }
-        .container {
-            background-color: #FFF9C4;
-            padding: 20px;
-            border-radius: 10px;
-        }
-    </style>
 </head>
 <body>
 <div class="container my-5">
     <div class="jumbotron">
-        <h3 class="display-4">☀️ User Information ☀️</h3>
+        <h3 class="display-4">☀️User Information ☀️</h3>
         <p class="lead">Hi You are in WAS server:) You can enter your information here.</p>
         <hr class="my-4">
         <div id="userInfoForm">
@@ -50,7 +35,7 @@
                 <button type="button" class="btn btn-primary" onclick="saveUserInfo()">Submit</button>
             </form>
         </div>
-        <a href="/home.html" class="btn btn-secondary mt-3">Go to Home</a>
+        <a th:href="@{/home}" class="btn btn-secondary mt-3">Go to Home</a>
     </div>
 </div>
 

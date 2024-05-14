@@ -1,0 +1,23 @@
+body {
+    background-color: #FFFFFF;
+}
+.jumbotron {
+    background-color: #f5e8d7;
+}
+.btn-primary, .btn-secondary {
+    background-color: #FFD700;
+    border-color: #FFD700;
+}
+.container {
+    background-color: #FFF9C4;
+    padding: 20px;
+    border-radius: 10px;
+}
+.img-thumbnail {
+    width: 200px;
+    height: 200px;
+}
+.center {
+    text-align: center;
+}
+
