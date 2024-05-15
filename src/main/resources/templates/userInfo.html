@@ -59,12 +59,19 @@
             data: JSON.stringify(userInfo),
             contentType: 'application/json',
             success: function(response) {
-                // 서버로부터 응답을 받으면 처리합니다.
-                $('#userInfoForm').html(response);
+                // 성공적으로 저장된 경우
+                $('#userInfoForm').html(response); // 성공 메시지를 화면에 표시
+                alert('Data saved successfully!'); // 팝업으로 저장 완료 메시지 표시
             },
-            error: function() {
-                // 오류가 발생했을 때 처리합니다.
-                alert('Failed to save user information.');
+            error: function(xhr, textStatus, errorThrown) {
+                // 에러 발생 시
+                if (textStatus === 'timeout') {
+                    alert('Operation timed out. Failed to save user information.'); // 타임아웃 오류 메시지
+                } else if (textStatus === 'error' && xhr.status === 0) {
+                    alert('Communications link failure. Failed to connect to the database.'); // 통신 연결 실패 오류 메시지
+                } else {
+                    alert('Failed to save user information.'); // 기타 오류 메시지
+                }
             }
         });
     }
