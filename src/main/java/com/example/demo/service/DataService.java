@@ -28,8 +28,6 @@ public class DataService {
     private String dbSecretName;
     @Value("${db.url.parameter.name}")
     private String dbUrlParameterName;
-    @Value("${spring.application.name}")
-    private String db;
 
     private String dbUrl;
     private String dbUser;
@@ -38,7 +36,7 @@ public class DataService {
 
     @PostConstruct
     public void initialize() {
-        dbUrl = "jdbc:mysql://" + getParameterStoreValue(dbUrlParameterName) +"/"+ db;
+        dbUrl = "jdbc:mysql://" + getParameterStoreValue(dbUrlParameterName) +"/loan";
         // Secret store 값 가져와서 변수에 넣기
         Region region = Region.AP_SOUTHEAST_1;
         SecretsManagerClient secretsClient = SecretsManagerClient.builder().region(region).build();
