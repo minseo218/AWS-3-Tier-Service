@@ -1,8 +1,8 @@
-FROM nginx:alpine
+FROM nginx:latest
 
 WORKDIR /app
 
-COPY *.jar /usr/share/nginx/html/app.jar
+COPY static/ /usr/share/nginx/html
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 #COPY default.conf /etc/nginx/nginx.conf

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/static/style.css">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,33 +9,17 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <style>
-    body {
-      background-color: #FFFFFF;
-    }
-    .jumbotron {
-      background-color: #FFFFFF;
-    }
-    .btn-primary, .btn-secondary {
-      background-color: #FFD700;
-      border-color: #FFD700;
-    }
-    .container {
-      background-color: #FFF9C4;
-      padding: 20px;
-      border-radius: 10px;
-    }
-  </style>
 </head>
 <body>
 <div class="container my-5">
   <div class="jumbotron">
     <h3 class="display-4">☀️ Happy Minsunny Day! ☀️</h3>
     <p class="lead">You are in Web server :)</p>
+    <img src="/static/cat.jpg" class="img-thumbnail" ><br>
     <hr class="my-4">
 <!--    <a href="/getData.html" class="btn btn-primary">Get Data from WAS</a>-->
 <!--    <br>-->
-    <a href="/userInfo.html" class="btn btn-secondary mt-3">Go to User Info Page</a>
+    <a th:href="@{/app/userInfo}" class="btn btn-secondary mt-3">Go to User Info Page</a>
   </div>
 </div>
 </body>
