@@ -1,0 +1,48 @@
+{
+  "family": "was-task",
+  "containerDefinitions": [
+    {
+      "name": "was",
+      "image": "891377163278.dkr.ecr.ap-southeast-1.amazonaws.com/minseo-was:latest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "was-8080-tcp",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/was-task",
+          "awslogs-region": "ap-southeast-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::891377163278:role/ecs-task-execution-role",
+  "executionRoleArn": "arn:aws:iam::891377163278:role/ecs-task-execution-role",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
