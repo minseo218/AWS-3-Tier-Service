@@ -3,5 +3,8 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: arn:aws:ecs:ap-southeast-1:891377163278:task-definition/was-task:18
-
+        TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377163278:task-definition/was-task"
+        LoadBalancerInfo:
+          ContainerName: "web"
+          ContainerPort: "80"
+        PlatformVersion: "LATEST"

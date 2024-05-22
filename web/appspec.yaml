@@ -3,10 +3,8 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377163278:task-definition/web-task:19"
+        TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377163278:task-definition/web-task"
         LoadBalancerInfo:
           ContainerName: "web"
           ContainerPort: "80"
         PlatformVersion: "LATEST"
-#          TargetGroupInfo:
-#            TargetGroupArn: "arn:aws:elasticloadbalancing:ap-southeast-1:891377163278:targetgroup/Web-TG/579b328776256ebf"
