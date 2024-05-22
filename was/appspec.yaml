@@ -5,6 +5,6 @@ Resources:
       Properties:
         TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377163278:task-definition/was-task"
         LoadBalancerInfo:
-          ContainerName: "web"
-          ContainerPort: "80"
+          ContainerName: "was"
+          ContainerPort: "8080"
         PlatformVersion: "LATEST"
