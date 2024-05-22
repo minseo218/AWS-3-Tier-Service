@@ -7,4 +7,11 @@ Resources:
         LoadBalancerInfo:
           ContainerName: "web"
           ContainerPort: 80
+          TargetGroupInfoList:
+            - Name: "BlueTargetGroup"
+              TargetGroupArn: "arn:aws:elasticloadbalancing:ap-southeast-1:891377163278:targetgroup/Web-TG/579b328776256ebf"
+            - Name: "GreenTargetGroup"
+              TargetGroupArn: "arn:aws:elasticloadbalancing:ap-southeast-1:891377163278:targetgroup/Web2-TG/e5a8902ea73e1162"
+          TargetGroupInfo:
+            - TargetGroupArn: ""
         PlatformVersion: "LATEST"
