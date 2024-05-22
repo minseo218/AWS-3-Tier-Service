@@ -7,7 +7,7 @@ Resources:
         TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377163278:task-definition/web-task:19"
         LoadBalancerInfo:
           ContainerName: "web"
-          ContainerPort: 80
-          TargetGroupInfo:
-            TargetGroupArn: "arn:aws:elasticloadbalancing:ap-southeast-1:891377163278:targetgroup/Web-TG/579b328776256ebf"
-        PlatformVersion: "LATEST"
+#          ContainerPort: 80
+#          TargetGroupInfo:
+#            TargetGroupArn: "arn:aws:elasticloadbalancing:ap-southeast-1:891377163278:targetgroup/Web-TG/579b328776256ebf"
+#        PlatformVersion: "LATEST"
