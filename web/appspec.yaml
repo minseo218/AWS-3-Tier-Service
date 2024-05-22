@@ -1,0 +1,6 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: arn:aws:ecs:ap-southeast-1:891377163278:task-definition/web-task:19
