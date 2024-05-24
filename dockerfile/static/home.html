@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="/static/style.css">
+<html>
+<link rel="stylesheet" href="style.css">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,11 +15,12 @@
   <div class="jumbotron">
     <h3 class="display-4">☀️ Happy Minsunny Day! ☀️</h3>
     <p class="lead">You are in Web server :)</p>
-    <img src="/static/cat.jpg" class="img-thumbnail" ><br>
+    <img src="https://d34belj2rv16h4.cloudfront.net/cat.jpg" class="img-thumbnail" ><br>
+
     <hr class="my-4">
 <!--    <a href="/getData.html" class="btn btn-primary">Get Data from WAS</a>-->
 <!--    <br>-->
-    <a th:href="@{/app/userInfo}" class="btn btn-secondary mt-3">Go to User Info Page</a>
+    <a href="/app/userInfo" class="btn btn-secondary mt-3">Go to User Info Page</a>
   </div>
 </div>
 </body>

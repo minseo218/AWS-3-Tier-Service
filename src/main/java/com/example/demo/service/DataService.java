@@ -51,9 +51,9 @@ public class DataService {
         dbPassword = jsonObject.get("password").getAsString();
 
         // 받아온 값들을 로그로 출력
-//        log.info("DB URL: {}", dbUrl);
-//        log.info("DB User: {}", dbUser);
-//        log.info("DB Password: {}", dbPassword);
+        log.info("DB URL: {}", dbUrl);
+        log.info("DB User: {}", dbUser);
+        log.info("DB Password: {}", dbPassword);
     }
 
     public String getParameterStoreValue(String parameterName) {
