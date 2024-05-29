@@ -32,8 +32,10 @@
                     <label for="loanDuration">Loan Duration (in months):</label>
                     <input type="number" class="form-control" id="loanDuration" placeholder="Enter loan duration">
                 </div>
+                <a th:href="@{/app/compareData}" class="btn btn-secondary">Get Data</a>
                 <button type="button" class="btn btn-primary" onclick="saveUserInfo()">Submit</button>
             </form>
+            <div th:if="${result}" th:text="${result}" class="mt-3"></div>
         </div>
         <a href="/home.html" class="btn btn-secondary mt-3">Go to Home</a>
     </div>
@@ -55,24 +57,25 @@
         // 서버로 정보를 전송합니다.
         $.ajax({
             type: 'POST',
-            url: '/saveUserInfo',
+            url: '/app/saveUserInfo',
             data: JSON.stringify(userInfo),
             contentType: 'application/json',
             success: function(response) {
-                // 성공적으로 저장된 경우
-                $('#userInfoForm').html(response); // 성공 메시지를 화면에 표시
-                alert('Data saved successfully!'); // 팝업으로 저장 완료 메시지 표시
+                if (response === "User information saved successfully.") {
+                    alert('Data saved successfully!');
+                } else {
+                    alert('Failed to save user information: ' + response);
+                }
+                $('#result').html('<p>' + response + '</p>');
             },
             error: function(xhr, textStatus, errorThrown) {
-                // 에러 발생 시
                 if (textStatus === 'timeout') {
-                    alert('Operation timed out. Failed to save user information.'); // 타임아웃 오류 메시지
+                    alert('Operation timed out. Failed to save user information.');
                 } else if (textStatus === 'error' && xhr.status === 0) {
-                    alert('Communications link failure. Failed to connect to the database.'); // 통신 연결 실패 오류 메시지
+                    alert('Communications link failure. Failed to connect to the database.');
                 } else {
-                    alert('Failed to save user information.'); // 기타 오류 메시지
+                    alert('Failed to save user information: ' + xhr.responseText);
                 }
-            }
         });
     }
 </script>
