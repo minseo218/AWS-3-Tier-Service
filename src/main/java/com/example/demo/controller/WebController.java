@@ -12,7 +12,6 @@ public class WebController {
     public String getHomePage() {
         return "home";
     }
-
     @GetMapping("/userInfo")
     public String getUserInfoPage() {
         return "userInfo";

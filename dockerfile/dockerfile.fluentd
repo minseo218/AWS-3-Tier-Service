@@ -1,0 +1,19 @@
+# Fluentd 이미지 사용
+FROM fluent/fluentd:edge-debian
+
+# 루트 권한을 사용하여 gem 설치
+USER root
+
+# Elasticsearch 플러그인 설치
+RUN gem install fluent-plugin-elasticsearch
+
+# Fluentd 설정 파일 복사
+COPY fluent.conf /fluentd/etc/
+
+# 포트 노출
+EXPOSE 24224
+EXPOSE 24224/udp
+
+# 기본 사용자를 fluent로 변경
+USER fluent
+

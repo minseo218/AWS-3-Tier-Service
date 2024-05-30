@@ -41,7 +41,7 @@ public class DataService {
 
     @PostConstruct
     public void initialize() {
-        dbUrl = "jdbc:mysql://" + getParameterStoreValue(dbUrlParameterName) +"/demo";
+        dbUrl = "jdbc:mysql://" + getParameterStoreValue(dbUrlParameterName) +":3306/demo";
         GetSecretValueRequest valueRequest = GetSecretValueRequest.builder().secretId(dbSecretName).build();
         GetSecretValueResponse valueResponse = secretsManagerClient.getSecretValue(valueRequest);
         String secretString = valueResponse.secretString();
