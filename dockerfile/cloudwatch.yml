@@ -1,0 +1,57 @@
+region: ap-southeast-1
+metrics:
+  - aws_namespace: AWS/ECS
+    aws_metric_name: CPUUtilization
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/ECS
+    aws_metric_name: MemoryUtilization
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/ApplicationELB
+    aws_metric_name: HealthyHostCount
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/ApplicationELB
+    aws_metric_name: RequestCount
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/Route53
+    aws_metric_name: HealthCheckStatus
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/CloudFront
+    aws_metric_name: Requests
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/CloudFront
+    aws_metric_name: BytesDownloaded
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/RDS
+    aws_metric_name: CPUUtilization
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/RDS
+    aws_metric_name: FreeStorageSpace
+    aws_statistics: [Minimum]
+
+  - aws_namespace: AWS/S3
+    aws_metric_name: BucketSizeBytes
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/S3
+    aws_metric_name: NumberOfObjects
+    aws_statistics: [Average]
+
+  - aws_namespace: AWS/S3
+    aws_metric_name: AllRequests
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/S3
+    aws_metric_name: GetRequests
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/S3
+    aws_metric_name: PutRequests
+    aws_statistics: [Sum]

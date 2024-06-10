@@ -1,0 +1,31 @@
+# Base image with Java and Maven
+FROM maven:3.8.6-openjdk-11-slim AS builder
+RUN apt-get update && apt-get install -y git
+
+# Set the working directory
+WORKDIR /app
+
+# Clone the cloudwatch_exporter repository
+RUN git clone https://github.com/prometheus/cloudwatch_exporter.git .
+
+# Build the cloudwatch_exporter JAR file
+RUN mvn package
+
+# Create a minimal image with JRE
+FROM openjdk:11-jre-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the cloudwatch configuration file to the expected path
+COPY cloudwatch.yml /prometheus/cloudwatch.yml
+
+# Copy the JAR file from the builder stage
+COPY --from=builder /app/target/cloudwatch_exporter-*-SNAPSHOT-jar-with-dependencies.jar /app/cloudwatch_exporter.jar
+
+# Expose the port
+EXPOSE 9106
+
+# Run the cloudwatch_exporter
+ENTRYPOINT ["java", "-jar", "/app/cloudwatch_exporter.jar"]
+CMD ["9106", "/prometheus/cloudwatch.yml"]

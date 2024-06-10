@@ -1,13 +1,40 @@
 {
-  "family": "web-task",
+  "family": "web-log",
   "containerDefinitions": [
+    {
+      "name": "log",
+      "image": "docker.io/amazon/aws-for-fluent-bit:latest",
+      "cpu": 0,
+      "portMappings": [],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "user": "0",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/web-log",
+          "awslogs-region": "ap-southeast-1",
+          "awslogs-stream-prefix": "firelens"
+        }
+      },
+      "systemControls": [],
+      "firelensConfiguration": {
+        "type": "fluentbit",
+        "options": {
+          "enable-ecs-log-metadata": "true"
+        }
+      }
+    },
     {
       "name": "web",
       "image": "891377163278.dkr.ecr.ap-southeast-1.amazonaws.com/minseo-repo:latest",
       "cpu": 0,
       "portMappings": [
         {
-          "name": "web-80-tcp",
+          "name": "web",
           "containerPort": 80,
           "hostPort": 80,
           "protocol": "tcp",
@@ -16,19 +43,17 @@
       ],
       "essential": true,
       "environment": [],
-      "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
-      "ulimits": [],
       "logConfiguration": {
-        "logDriver": "awslogs",
+        "logDriver": "awsfirelens",
         "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/web-task",
-          "awslogs-region": "ap-southeast-1",
-          "awslogs-stream-prefix": "ecs"
-        },
-        "secretOptions": []
+          "Host": "a20d34f42d6b64e61874ae912d5a439a-986439251.ap-northeast-2.elb.amazonaws.com",
+          "Index": "minseo",
+          "Name": "es",
+          "Port": "9200",
+          "Type": "elasticsearch"
+        }
       },
       "systemControls": []
     }
@@ -40,9 +65,5 @@
     "FARGATE"
   ],
   "cpu": "256",
-  "memory": "512",
-  "runtimePlatform": {
-    "cpuArchitecture": "X86_64",
-    "operatingSystemFamily": "LINUX"
-  }
+  "memory": "512"
 }

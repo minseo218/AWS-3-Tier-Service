@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.model.LoanCompany;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -49,10 +48,6 @@ public class DataService {
 
         dbUser = jsonObject.get("username").getAsString();
         dbPassword = jsonObject.get("password").getAsString();
-
-        log.info("DB URL: {}", dbUrl);
-        log.info("DB User: {}", dbUser);
-        log.info("DB Password: {}", dbPassword);
     }
 
     public String getParameterStoreValue(String parameterName) {
@@ -81,7 +76,7 @@ public class DataService {
         List<LoanCompany> loanCompanies = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
              Statement selectStatement = connection.createStatement();
-             ResultSet resultSet = selectStatement.executeQuery("SELECT company_name, interest_rate FROM loan_companies")) {
+             ResultSet resultSet = selectStatement.executeQuery("SELECT company_name, interest_rate FROM companies")) {
             while (resultSet.next()) {
                 String companyName = resultSet.getString("company_name");
                 double interestRate = resultSet.getDouble("interest_rate");

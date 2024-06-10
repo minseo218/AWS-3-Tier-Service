@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'ecs_discovery'
+    file_sd_configs:
+      - files: ["/prometheus/ecs_file_sd.yml"]
+        refresh_interval: 5m
+  - job_name: 'cloudwatch_exporter'
+    scrape_interval: 60s
+    static_configs:
+      - targets: ['localhost:9106']

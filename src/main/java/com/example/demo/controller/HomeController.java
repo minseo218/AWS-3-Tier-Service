@@ -16,6 +16,7 @@ public class HomeController {
     @GetMapping("/getUserData")
     @ResponseBody
     public String getUserData(@RequestParam String userName) {
+
         return dataService.calculateLoanData(userName);
     }
 
