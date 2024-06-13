@@ -55,3 +55,20 @@ metrics:
   - aws_namespace: AWS/S3
     aws_metric_name: PutRequests
     aws_statistics: [Sum]
+
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'ecs_discovery'
+    file_sd_configs:
+      - files: ["/prometheus/ecs_file_sd.yml"]
+        refresh_interval: 1m
+  - job_name: 'cloudwatch_exporter'
+    static_configs:
+      - targets: ['localhost:9106']
+  - job_name: 'was'
+    static_configs:
+      - targets: ['10.70.20.152:8080/metrics']
+  - job_name: 'web'
+    static_configs:
+      - targets: ['10.70.20.72:9116/metrics']

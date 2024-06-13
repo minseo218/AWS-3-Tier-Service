@@ -16,15 +16,18 @@
       ],
       "essential": true,
       "environment": [],
-      "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
-      "ulimits": [],
+      "dockerLabels": {
+        "PROMETHEUS_EXPORTER_PORT": "8080",
+        "PROMETHEUS_JOB_NAME": "was",
+        "PROMETHEUS_METRICS_PATH": "/metrics"
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-create-group": "true",
           "awslogs-group": "/ecs/was-task",
+          "awslogs-create-group": "true",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         },
